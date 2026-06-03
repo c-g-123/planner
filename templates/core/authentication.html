@@ -1,0 +1,32 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block navbar %}
+    {% include "core/component/navbar/splash.html" %}
+{% endblock %}
+{% block body %}
+    <h2>
+        {% if is_registration %}
+            Register
+        {% else %}
+            Login
+        {% endif %}
+    </h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">
+            {% if is_registration %}
+                Register
+            {% else %}
+                Login
+            {% endif %}
+        </button>
+    </form>
+    <p>
+        {% if is_registration %}
+            Already have an account? <a href="{% url "core:login" %}">Log in</a>.
+        {% else %}
+            Don't have an account? <a href="{% url "core:register" %}">Register</a>.
+        {% endif %}
+    </p>
+{% endblock %}

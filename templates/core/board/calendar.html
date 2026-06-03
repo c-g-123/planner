@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'style/core/board/calendar.css' %}">
+{% endblock %}
+{% block body %}
+    {% for month in months %}
+        <section class="month">
+            <h2>{{ month.name }} {{ month.year }}</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                        <th>Sun</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for week in month.weeks %}
+                        <tr>
+                            {% for day in week %}
+                                <td>
+                                    {% if day %}
+                                        <div>{{ day.date.day }}</div>
+                                        {% for item in day.items %}
+                                            <div>
+                                                <a href="{% url "core:edit_item" item.id %}">{{ item.name }}</a>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    {% endfor %}
+    <a href="{% url 'core:create_item' %}" class="fab">+</a>
+{% endblock %}

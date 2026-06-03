@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+{% block body %}
+    <a href="{% url "core:tags" %}">x</a>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">
+            {% if form.instance.pk %}
+                Save tag
+            {% else %}
+                Create tag
+            {% endif %}
+        </button>
+    </form>
+    {% if form.instance.pk %}
+        <form method="post" action="{% url 'core:delete_tag' form.instance.id %}">
+            {% csrf_token %}
+            <button type="submit">Delete tag</button>
+        </form>
+    {% endif %}
+{% endblock %}

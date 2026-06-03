@@ -1,0 +1,53 @@
+:root {
+    --navbar-height: 3rem;
+
+    --navbar-background: #e8e8e8;
+    --border-color: #d0d0d0;
+
+    --spacing: 0.5rem;
+
+    --fab-size: 3.5rem;
+    --fab-offset: 1rem;
+    --fab-background: #444;
+    --fab-colour: #fff;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+
+    padding: 0 var(--spacing);
+    height: var(--navbar-height);
+
+    display: flex;
+    align-items: center;
+
+    background: var(--navbar-background);
+    box-shadow: inset 0 0 0 1px var(--border-color);
+}
+
+.right {
+    margin-left: auto;
+}
+
+.fab {
+    position: fixed;
+    right: var(--fab-offset);
+    bottom: var(--fab-offset);
+
+    width: var(--fab-size);
+    height: var(--fab-size);
+
+    border-radius: 50%;
+
+    background: var(--fab-background);
+    color: var(--fab-colour);
+
+    text-decoration: none;
+    text-align: center;
+    line-height: var(--fab-size);
+    font-size: calc(var(--fab-size) * 0.57);
+
+    z-index: 1000;
+}
