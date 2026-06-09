@@ -40,19 +40,20 @@ The project is intended to improve my understanding of Django and wider web appl
 
 ## Todo
 
+- Improve efficiency (through AI peer review) of board.calendar.
 - HTMX item window on RHS (span page on mobile).
 - HTMX tag window on RHS (left of item window)(span page on mobile).
-- Dynamic loading of calendar content as the user scrolls.
 - Item collation by tags in calendar and agenda boards.
 - Repeating items.
 - Quality of life:
   - Start datetime now button
   - End datetime autofills to start datetime
   - +0, +0.25, +0.5, +1 hour, +1 day buttons for end datetime (javascript)
+- simple user feedback form
 
 ## In-progress
 
-- Check code quality for everything so far.
+- Add previous months to htmx scrolling.
 
 ## Done
 

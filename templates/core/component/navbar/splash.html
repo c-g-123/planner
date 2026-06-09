@@ -1,5 +1,7 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'style/core/component.css' %}">
+{% block head %}
+    <link rel="stylesheet" href="{% static 'style/core/component/navbar.css' %}">
+{% endblock %}
 <nav class="navbar">
     <a href="{% url 'core:index' %}">Planner</a>
     <a class="right" href="{% url 'core:login' %}">Login</a>

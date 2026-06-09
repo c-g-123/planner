@@ -7,8 +7,8 @@ from core.models import Tag
 
 TAGS_URL_NAME = "core:tags"
 EDIT_TAG_URL_NAME = "core:edit_tag"
-TAGS_TEMPLATE_PATH = "core/tags.html"
-TAG_TEMPLATE_PATH = "core/tag.html"
+TAGS_TEMPLATE_PATH = "core/tag/tags.html"
+TAG_TEMPLATE_PATH = "core/tag/tag.html"
 
 @require_GET
 @login_required
@@ -52,7 +52,7 @@ def _create_get(request):
     return render(
         request,
         TAG_TEMPLATE_PATH,
-        context
+        context,
     )
 
 def _create_post(request):
@@ -66,7 +66,7 @@ def _create_post(request):
         return render(
             request,
             TAG_TEMPLATE_PATH,
-            context
+            context,
         )
 
     created_tag = form.save(commit=False)
@@ -86,7 +86,7 @@ def _edit_get(request, tag_id):
     return render(
         request,
         TAG_TEMPLATE_PATH,
-        context
+        context,
     )
 
 def _edit_post(request, tag_id):
@@ -101,16 +101,16 @@ def _edit_post(request, tag_id):
         return render(
             request,
             TAG_TEMPLATE_PATH,
-            context
+            context,
         )
 
     form.save()
 
-    return redirect(EDIT_TAG_URL_NAME, tag_id=tag.id)
+    return redirect(TAGS_URL_NAME)
 
 def _get_user_tag_or_404(user, tag_id):
     return get_object_or_404(
         Tag,
         user=user,
-        id=tag_id
+        id=tag_id,
     )

@@ -105,5 +105,5 @@ def _get_user_item_or_404(user, item_id):
     return get_object_or_404(
         Item,
         user=user,
-        id=item_id
+        id=item_id,
     )

@@ -1,0 +1,9 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'style/core/board/calendar.css' %}">
+{% endblock %}
+{% block body %}
+    {% include "core/board/calendar/month.html" with month=current_month previous_month=previous_month next_month=next_month %}
+    <a href="{% url 'core:create_item' %}" class="fab">+</a>
+{% endblock %}

@@ -26,10 +26,7 @@ class Item(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=MAX_NAME_LENGTH)
-    description = models.TextField(
-        max_length=MAX_DESCRIPTION_LENGTH,
-        blank=True,
-    )
+    description = models.TextField(max_length=MAX_DESCRIPTION_LENGTH, blank=True)
     is_complete = models.BooleanField(default=False)
     tags = models.ManyToManyField(
         Tag,

@@ -18,10 +18,10 @@ DEFAULT_PASSWORD = "password"
 USER_COUNT = 5
 TAGS_PER_USER = 5
 SEED = 12345  # Seed used for generating item datetimes and tag assignments.
-ITEMS_PER_USER = 30
+ITEMS_PER_USER =100
 MAX_TAGS_PER_ITEM = 3
-MAX_ITEM_DATE_DELTA_FROM_NOW = 10
-MAX_ITEM_DURATION_HOURS = 4
+MAX_ITEM_DATE_DELTA_FROM_NOW = 90
+MAX_ITEM_DURATION_HOURS = 48
 
 def clear():
     Item.objects.all().delete()
@@ -44,7 +44,7 @@ def populate_users(user_count):
         user = User.objects.create_user(
             username=username,
             email=DEFAULT_EMAIL,
-            password=DEFAULT_PASSWORD
+            password=DEFAULT_PASSWORD,
         )
         if DEBUG: print(f"User {user} created.")
 
@@ -61,7 +61,7 @@ def populate_tags(tags_per_user):
             tag = Tag.objects.create(
                 user=user,
                 name=tag_name,
-                colour=random_colour
+                colour=random_colour,
             )
             if DEBUG: print(f"Tag {tag} created for user {user}.")
 
@@ -78,25 +78,30 @@ def populate_items(seed, items_per_user):
 
         for i in range(items_per_user):
             name = f"item{i}"
+
             random_is_complete = random.choice([True, False])
-            random_start = timezone.now() + timedelta(days=random.randint(-MAX_ITEM_DATE_DELTA_FROM_NOW, MAX_ITEM_DATE_DELTA_FROM_NOW))
-            random_end = random_start + timedelta(hours=random.randint(0, MAX_ITEM_DURATION_HOURS))
+
+            random_date_delta = random.randint(-MAX_ITEM_DATE_DELTA_FROM_NOW, MAX_ITEM_DATE_DELTA_FROM_NOW)
+            random_start_time_delta = timedelta(days=random_date_delta)
+            random_start = timezone.now() + random_start_time_delta
+
+            random_hour_delta = random.randint(0, MAX_ITEM_DURATION_HOURS)
+            random_end_time_delta = timedelta(hours=random_hour_delta)
+            random_end = random_start + random_end_time_delta
+
             item = Item(
                 user=user,
                 name=name,
                 is_complete=random_is_complete,
                 start_datetime=random_start,
-                end_datetime=random_end
+                end_datetime=random_end,
             )
             item.full_clean()
             item.save()
             if DEBUG: print(f"Item {item} created for user {user}.")
 
             tag_count = min(MAX_TAGS_PER_ITEM, len(user_tags))
-            random_tag_sample = random.sample(
-                user_tags,
-                k=random.randint(0, tag_count)
-            )
+            random_tag_sample = random.sample(user_tags, k=random.randint(0, tag_count))
             item.tags.set(random_tag_sample)
             if DEBUG: print(f"{tag_count} tags assigned to item {item}.")
 

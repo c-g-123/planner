@@ -4,7 +4,7 @@
     <ul>
         {% for tag in tags %}
             <li>
-                <a href="{% url "core:edit_tag" tag.id %}">{{ tag }}</a>
+                <a style="color: {{ tag.colour }};" href="{% url "core:edit_tag" tag.id %}">{{ tag }}</a>
             </li>
         {% empty %}
             You have no tags.

@@ -57,9 +57,6 @@ def _register_post(request):
     return redirect(CALENDAR_URL_NAME)
 
 def _login_get(request):
-    if request.user.is_authenticated:
-        return redirect(CALENDAR_URL_NAME)
-
     context = {
         "form": AuthenticationForm(),
         "is_registration": False,
