@@ -24,8 +24,10 @@ The project is intended to improve my understanding of Django and wider web appl
 - User registration and login.
 - Items.
 - Tags.
-- Item collation by tags in calendar and agenda boards.
+- Calendar.
+- Agenda.
 - Repeating items.
+- Item collation on boards by tags.
 
 # Stretch Features
 
@@ -40,11 +42,13 @@ The project is intended to improve my understanding of Django and wider web appl
 
 ## Todo
 
-- Improve efficiency (through AI peer review) of board.calendar.
-- HTMX item window on RHS (span page on mobile).
-- HTMX tag window on RHS (left of item window)(span page on mobile).
-- Item collation by tags in calendar and agenda boards.
+- Calendar.
+  - HTMX item window on RHS (span page on mobile).
+  - HTMX tag window on RHS (left of item window)(span page on mobile).
+- Agenda.
 - Repeating items.
+- Item collation by tags in calendar and agenda boards.
+
 - Quality of life:
   - Start datetime now button
   - End datetime autofills to start datetime
@@ -53,7 +57,10 @@ The project is intended to improve my understanding of Django and wider web appl
 
 ## In-progress
 
-- Add previous months to htmx scrolling.
+- Calendar.
+  - Improve efficiency (through AI peer review) of board.calendar.
+  - Add previous months to htmx scrolling.
+    - stop it from scrolling up infinitely really fast
 
 ## Done
 
