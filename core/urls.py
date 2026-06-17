@@ -12,7 +12,8 @@ urlpatterns = [
     path("logout/", views.authentication.logout_view, name="logout"),
 
     path("calendar/", views.board.calendar.calendar_view, name="calendar"),
-    path("calendar/<int:year>/<int:month>/", views.board.calendar.month_view, name="month"),
+    path("calendar/month/current/", views.board.calendar.current_month, name="current_month"),
+    path("calendar/month/<int:year>/<int:month>/", views.board.calendar.month_view, name="month"),
 
     path("item/create/", views.item.create, name="create_item"),
     path("item/<int:item_id>/", views.item.item_view, name="item"),

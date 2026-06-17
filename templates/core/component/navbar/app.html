@@ -6,6 +6,6 @@
     <a href="{% url 'core:calendar' %}">Calendar</a>
     <form class="right" method="post" action="{% url 'core:logout' %}">
         {% csrf_token %}
-        <button type="submit">Logout</button>
+        <button>Logout</button>
     </form>
 </nav>

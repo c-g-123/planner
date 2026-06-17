@@ -20,15 +20,17 @@ FIRST_WEEKDAY = SUNDAY
 @require_GET
 @login_required
 def calendar_view(request):
-    context = {
-        "current_month": _get_current_month_context(),
-    }
-
     return render(
         request,
         CALENDAR_TEMPLATE_PATH,
-        context,
     )
+
+@require_GET
+@login_required
+def current_month(request):
+    today = date.today()  # TODO Make sure this uses the client's timezone.
+
+    return month_view(request, today.year, today.month)
 
 @require_GET
 @login_required
@@ -43,7 +45,6 @@ def month_view(request, year, month):
         "month": month_context,
         "previous_month": previous_month_context,
         "next_month": next_month_context,
-        "current_month": _get_current_month_context()
     }
 
     return render(
@@ -92,14 +93,6 @@ def _get_next_month_context(year, month):
     return {
         "year": year,
         "month": month + 1,
-    }
-
-def _get_current_month_context():
-    today = date.today()
-
-    return {
-        "year": today.year,
-        "month": today.month,
     }
 
 def _get_month_data(user, year, month):

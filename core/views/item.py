@@ -1,3 +1,4 @@
+from datetime import datetime
 from json import dumps
 
 from django.contrib.auth.decorators import login_required
@@ -10,7 +11,7 @@ from core.models import Item
 
 URL_NAME = "core:item"
 CALENDAR_URL_NAME = "core:calendar"
-TEMPLATE_PATH = "core/item/partial.html"
+TEMPLATE_PATH = "core/item.html"
 
 @require_http_methods(["GET", "POST"])
 @login_required
@@ -39,7 +40,15 @@ def delete(request, item_id):
     return empty_response
 
 def _render_create_form(request):
-    form = ItemForm(user=request.user)
+    date_str = request.GET.get("date")
+
+    initial_form = {}
+
+    if date_str:
+        initial_datetime = datetime.strptime(date_str, "%Y-%m-%d")
+        initial_form["start_datetime"] = initial_datetime
+
+    form = ItemForm(initial=initial_form, user=request.user)
     context = {
         "form": form,
     }

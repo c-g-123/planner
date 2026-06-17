@@ -54,11 +54,7 @@ The project is intended to improve my understanding of Django and wider web appl
 
 ## In-progress
 
-- Calendar.
-  - item panel
-      - Start datetime now button
-      - datetime autofills on pushing +
-      - +0, +0.25, +0.5, +1 hour, +1 day buttons for end datetime
+- datetimes are in client local timezone (calendar and item views)
 
 ## Done
 

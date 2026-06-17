@@ -13,7 +13,7 @@
         >
     </button>
     <button
-            hx-get="{% url 'core:month' year=current_month.year month=current_month.month %}"
+            hx-get="{% url 'core:current_month' %}"
             hx-target="#calendar"
     >
         Reset
@@ -42,14 +42,14 @@
                                 {% for item in day.items %}
                                     <button
                                             hx-get="{% url 'core:item' item_id=item.id %}"
-                                            hx-target="#side-panel"
+                                            hx-target="#item-panel"
                                     >
                                         {{ item.name }}
                                     </button>
                                 {% endfor %}
                                 <button
-                                        hx-get="{% url 'core:create_item' %}"
-                                        hx-target="#side-panel"
+                                        hx-get="{% url 'core:create_item' %}?date={{ day.date|date:'Y-m-d' }}"
+                                        hx-target="#item-panel"
                                 >
                                     +
                                 </button>

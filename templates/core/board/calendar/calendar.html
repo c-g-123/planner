@@ -5,17 +5,21 @@
 {% endblock %}
 {% block body %}
     <div class="calendar-container">
+        <button
+                class="floating-button"
+                hx-get="{% url 'core:create_item' %}"
+                hx-target="#item-panel"
+        >
+            +
+        </button>
         <div
-                class="calendar"
                 id="calendar"
-                hx-get="{% url 'core:month' year=current_month.year month=current_month.month %}"
-                hx-target="#calendar"
+                hx-get="{% url 'core:current_month' %}"
                 hx-trigger="load, itemUpdated from:body"
         >
         </div>
         <div
-                class="side-panel"
-                id="side-panel"
+                id="item-panel"
         >
         </div>
     </div>

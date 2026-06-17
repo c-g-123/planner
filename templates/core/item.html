@@ -1,0 +1,103 @@
+<button
+        id="close-button"
+    >
+        x
+</button>
+<form
+    hx-post="{% if form.instance.pk %}{% url 'core:item' item_id=form.instance.id %}{% else %}{% url 'core:create_item' %}{% endif %}" hx-target="#item-panel"
+>
+    {% csrf_token %}
+    {% if form.instance.pk %}
+        <div>
+            {{ form.is_complete.label_tag }}
+            {{ form.is_complete }}
+            {{ form.is_complete.errors }}
+        </div>
+    {% endif %}
+    <div>
+        {{ form.name.label_tag }}
+        {{ form.name }}
+        {{ form.name.errors }}
+    </div>
+    <div>
+        {{ form.description.label_tag }}
+        {{ form.description }}
+        {{ form.description.errors }}
+    </div>
+    <div>
+        {{ form.tags.label_tag }}
+        {{ form.tags }}
+        {{ form.tags.errors }}
+        <a href="{% url "core:tags" %}">Manage tags</a>
+    </div>
+    <div>
+        {{ form.start_datetime.label_tag }}
+        {{ form.start_datetime }}
+        {{ form.start_datetime.errors }}
+        <button type="button" onclick="adjustMinutes('id_start_datetime', -15)">
+            - 15 minutes
+        </button>
+        <button type="button" onclick="setCurrentTime('id_start_datetime')">
+            Now
+        </button>
+        <button type="button" onclick="adjustMinutes('id_start_datetime', 15)">
+            + 15 minutes
+        </button>
+    </div>
+    <div>
+        {{ form.end_datetime.label_tag }}
+        {{ form.end_datetime }}
+        {{ form.end_datetime.errors }}
+        <button type="button" onclick="adjustMinutes('id_end_datetime', -15)">
+            - 15 minutes
+        </button>
+        <button type="button" onclick="setCurrentTime('id_end_datetime')">
+            Now
+        </button>
+        <button type="button" onclick="adjustMinutes('id_end_datetime', 15)">
+            + 15 minutes
+        </button>
+    </div>
+    <div>
+        {{ form.non_field_errors }}
+    </div>
+    <button>
+        {% if form.instance.pk %}
+            Save item
+        {% else %}
+            Create item
+        {% endif %}
+    </button>
+</form>
+{% if form.instance.pk %}
+    <form hx-post="{% url 'core:delete_item' item_id=form.instance.id %}" hx-target="#side-panel">
+        {% csrf_token %}
+        <button>Delete item</button>
+    </form>
+{% endif %}
+
+<script>
+    document.getElementById("close-button").addEventListener("click", () => {
+        document.getElementById("item-panel").innerHTML = "";
+    });
+
+    function setCurrentTime(inputId) {
+        document.getElementById(inputId).value = new Date().toISOString().slice(0,16)
+    }
+
+    // TODO Make this function my own.
+    function adjustMinutes(inputId, minutes) {
+        const input = document.getElementById(inputId);
+
+        if (!input.value) {
+            input.value = new Date().toISOString().slice(0, 16);
+        }
+
+        const date = new Date(input.value);
+        date.setMinutes(date.getMinutes() + minutes);
+
+        const pad = n => String(n).padStart(2, "0");
+
+        input.value = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    }
+</script>
