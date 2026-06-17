@@ -3,14 +3,15 @@ import random
 from datetime import timedelta
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "planner.settings")
-
 from django import setup
 setup()
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 
 from core.models import Tag, Item
+
+User = get_user_model()
 
 DEBUG = False
 DEFAULT_EMAIL = "abc@xyz.com"

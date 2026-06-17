@@ -1,11 +1,25 @@
-{% if previous_month %}
-    <div hx-get="{% url 'core:previous_month' year=previous_month.year month=previous_month.month %}"
-         hx-trigger="intersect once"
-         hx-swap="outerHTML">
-    </div>
-{% endif %}
-<section class="calendar">
+<div class="month-header">
+    <button
+            hx-get="{% url 'core:month' year=previous_month.year month=previous_month.month %}"
+            hx-target="#calendar"
+    >
+        <
+    </button>
     <h2>{{ month.name }} {{ month.year }}</h2>
+    <button
+            hx-get="{% url 'core:month' year=next_month.year month=next_month.month %}"
+            hx-target="#calendar"
+    >
+        >
+    </button>
+    <button
+            hx-get="{% url 'core:month' year=current_month.year month=current_month.month %}"
+            hx-target="#calendar"
+    >
+        Reset
+    </button>
+</div>
+<div class="month">
     <table>
         <thead>
             <tr>
@@ -26,10 +40,19 @@
                             {% if day %}
                                 <div>{{ day.date.day }}</div>
                                 {% for item in day.items %}
-                                    <div>
-                                        <a href="{% url 'core:edit_item' item.id %}">{{ item.name }}</a>
-                                    </div>
+                                    <button
+                                            hx-get="{% url 'core:item' item_id=item.id %}"
+                                            hx-target="#side-panel"
+                                    >
+                                        {{ item.name }}
+                                    </button>
                                 {% endfor %}
+                                <button
+                                        hx-get="{% url 'core:create_item' %}"
+                                        hx-target="#side-panel"
+                                >
+                                    +
+                                </button>
                             {% endif %}
                         </td>
                     {% endfor %}
@@ -37,10 +60,4 @@
             {% endfor %}
         </tbody>
     </table>
-</section>
-{% if next_month %}
-    <div hx-get="{% url 'core:next_month' year=next_month.year month=next_month.month %}"
-         hx-trigger="intersect once"
-         hx-swap="outerHTML">
-    </div>
-{% endif %}
+</div>

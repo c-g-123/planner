@@ -10,36 +10,12 @@
     --radius: 0.25rem;
 }
 
-.calendar {
-    margin-bottom: var(--spacing);
+.calendar-container {
+    display: flex;
 }
 
-.calendar table {
-    width: 100%;
-
-    table-layout: fixed;
-    border-spacing: 0;
-}
-
-.calendar td {
-    vertical-align: top;
-
-    padding: var(--spacing);
-    height: var(--cell-height);
-
-    background: var(--cell-background);
-    box-shadow: inset 0 0 0 1px var(--border-color);
-}
-
-.calendar h2,
-.calendar th {
+.month-header {
     position: sticky;
-
-    background: var(--header-background);
-    box-shadow: inset 0 0 0 1px var(--border-color);
-}
-
-.calendar h2 {
     top: var(--navbar-height);
     z-index: 2;
 
@@ -48,12 +24,42 @@
 
     display: flex;
     align-items: center;
+    justify-content: center;
     padding-left: var(--spacing);
+    background-color: var(--header-background);
 }
 
-.calendar th {
+.month {
+    margin-bottom: var(--spacing);
+}
+
+.month table {
+    width: 100%;
+
+    table-layout: fixed;
+    border-spacing: 0;
+}
+
+.month th {
+    position: sticky;
+
+    background: var(--header-background);
+    box-shadow: inset 0 0 0 1px var(--border-color);
+}
+
+.month th {
     top: calc(var(--navbar-height) + var(--month-header-height));
     z-index: 1;
 
     padding: var(--spacing);
+}
+
+.month td {
+    vertical-align: top;
+
+    padding: var(--spacing);
+    height: var(--cell-height);
+
+    background: var(--cell-background);
+    box-shadow: inset 0 0 0 1px var(--border-color);
 }

@@ -1,40 +1,47 @@
+from json import dumps
+
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_http_methods, require_POST
 
 from core.forms import ItemForm
 from core.models import Item
 
+URL_NAME = "core:item"
 CALENDAR_URL_NAME = "core:calendar"
-EDIT_URL_NAME = "core:edit_item"
-TEMPLATE_PATH = "core/item.html"
+TEMPLATE_PATH = "core/item/partial.html"
 
 @require_http_methods(["GET", "POST"])
 @login_required
 def create(request):
     if request.method == "GET":
-        return _create_get(request)
+        return _render_create_form(request)
 
-    return _create_post(request)
+    return _process_create_form(request)
 
 @require_http_methods(["GET", "POST"])
 @login_required
-def edit(request, item_id):
+def item_view(request, item_id):
     if request.method == "GET":
-        return _edit_get(request, item_id)
+        return _render_edit_form(request, item_id)
 
-    return _edit_post(request, item_id)
+    return _process_edit_form(request, item_id)
 
 @require_POST
 @login_required
 def delete(request, item_id):
     item = _get_user_item_or_404(user=request.user, item_id=item_id)
     item.delete()
-    return redirect(CALENDAR_URL_NAME)
 
-def _create_get(request):
+    empty_response = HttpResponse()
+    _attach_item_updated_htmx_trigger(empty_response)
+    return empty_response
+
+def _render_create_form(request):
+    form = ItemForm(user=request.user)
     context = {
-        "form": ItemForm(user=request.user),
+        "form": form,
     }
 
     return render(
@@ -43,7 +50,7 @@ def _create_get(request):
         context,
     )
 
-def _create_post(request):
+def _process_create_form(request):
     form = ItemForm(data=request.POST, user=request.user)
 
     if not form.is_valid():
@@ -61,12 +68,13 @@ def _create_post(request):
     created_item.user = request.user
     created_item.save()
 
-    return redirect(EDIT_URL_NAME, item_id=created_item.id)
+    response = _render_edit_form(request, created_item.id)
+    _attach_item_updated_htmx_trigger(response)
+    return response
 
-def _edit_get(request, item_id):
+def _render_edit_form(request, item_id):
     item = _get_user_item_or_404(user=request.user, item_id=item_id)
     form = ItemForm(instance=item, user=request.user)
-
     context = {
         "form": form,
     }
@@ -77,15 +85,13 @@ def _edit_get(request, item_id):
         context,
     )
 
-def _edit_post(request, item_id):
+def _process_edit_form(request, item_id):
     item = _get_user_item_or_404(user=request.user, item_id=item_id)
-
     form = ItemForm(
         data=request.POST,
         instance=item,
         user=request.user,
     )
-
     context = {
         "form": form,
     }
@@ -99,7 +105,13 @@ def _edit_post(request, item_id):
 
     form.save()
 
-    return redirect(CALENDAR_URL_NAME)
+    response = render(
+        request,
+        TEMPLATE_PATH,
+        context,
+    )
+    _attach_item_updated_htmx_trigger(response)
+    return response
 
 def _get_user_item_or_404(user, item_id):
     return get_object_or_404(
@@ -107,3 +119,11 @@ def _get_user_item_or_404(user, item_id):
         user=user,
         id=item_id,
     )
+
+#TODO Check if mutation matters here.
+def _attach_item_updated_htmx_trigger(response):
+    hx_trigger = {
+        "itemUpdated": True,
+    }
+    serialised_hx_trigger = dumps(hx_trigger)
+    response["HX-Trigger"] = serialised_hx_trigger

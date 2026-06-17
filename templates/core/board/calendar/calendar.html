@@ -4,6 +4,19 @@
     <link rel="stylesheet" href="{% static 'style/core/board/calendar.css' %}">
 {% endblock %}
 {% block body %}
-    {% include "core/board/calendar/month.html" with month=current_month previous_month=previous_month next_month=next_month %}
-    <a href="{% url 'core:create_item' %}" class="fab">+</a>
+    <div class="calendar-container">
+        <div
+                class="calendar"
+                id="calendar"
+                hx-get="{% url 'core:month' year=current_month.year month=current_month.month %}"
+                hx-target="#calendar"
+                hx-trigger="load, itemUpdated from:body"
+        >
+        </div>
+        <div
+                class="side-panel"
+                id="side-panel"
+        >
+        </div>
+    </div>
 {% endblock %}

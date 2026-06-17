@@ -1,6 +1,5 @@
 {% extends "core/base.html" %}
 {% block body %}
-    <a href="{% url "core:calendar" %}">x</a>
     <form method="post">
         {% csrf_token %}
         {% if form.instance.pk %}
@@ -27,12 +26,6 @@
             <a href="{% url "core:tags" %}">Manage tags</a>
         </div>
         <div>
-            <span class="tooltip-icon">
-                ⓘ
-                <span class="tooltip-text">
-                    {{ form.name.help_text }}
-                </span>
-            </span>
             {{ form.start_datetime.label_tag }}
             {{ form.start_datetime }}
             {{ form.start_datetime.errors }}
@@ -54,7 +47,7 @@
         </button>
     </form>
     {% if form.instance.pk %}
-        <form method="post" action="{% url 'core:delete_item' form.instance.id %}">
+        <form method="post" action="{% url 'core:delete_item' item_id=form.instance.id %}">
             {% csrf_token %}
             <button type="submit">Delete item</button>
         </form>

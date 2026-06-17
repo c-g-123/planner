@@ -6,7 +6,7 @@ from core.forms import TagForm
 from core.models import Tag
 
 TAGS_URL_NAME = "core:tags"
-EDIT_TAG_URL_NAME = "core:edit_tag"
+TAG_URL_NAME = "core:tag"
 TAGS_TEMPLATE_PATH = "core/tag/tags.html"
 TAG_TEMPLATE_PATH = "core/tag/tag.html"
 
@@ -19,7 +19,11 @@ def tags(request):
         "tags": user_tags,
     }
 
-    return render(request, TAGS_TEMPLATE_PATH, context)
+    return render(
+        request,
+        TAGS_TEMPLATE_PATH,
+        context,
+    )
 
 @require_http_methods(["GET", "POST"])
 @login_required
@@ -31,7 +35,7 @@ def create(request):
 
 @require_http_methods(["GET", "POST"])
 @login_required
-def edit(request, tag_id):
+def tag_view(request, tag_id):
     if request.method == "GET":
         return _edit_get(request, tag_id)
 
@@ -73,7 +77,7 @@ def _create_post(request):
     created_tag.user = request.user
     created_tag.save()
 
-    return redirect(EDIT_TAG_URL_NAME, tag_id=created_tag.id)
+    return redirect(TAG_URL_NAME, tag_id=created_tag.id)
 
 def _edit_get(request, tag_id):
     tag = _get_user_tag_or_404(user=request.user, tag_id=tag_id)
@@ -91,7 +95,11 @@ def _edit_get(request, tag_id):
 
 def _edit_post(request, tag_id):
     tag = _get_user_tag_or_404(user=request.user, tag_id=tag_id)
-    form = TagForm(data=request.POST, instance=tag, user=request.user)
+    form = TagForm(
+        data=request.POST,
+        instance=tag,
+        user=request.user,
+    )
 
     context = {
         "form": form,

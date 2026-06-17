@@ -2,7 +2,6 @@ from calendar import Calendar, DECEMBER, JANUARY, month_name, SUNDAY
 from collections import defaultdict
 from datetime import date
 
-# TODO Use less imports.
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render
@@ -12,22 +11,17 @@ from core.models import Item
 
 CALENDAR_TEMPLATE_PATH = "core/board/calendar/calendar.html"
 MONTH_TEMPLATE_PATH = "core/board/calendar/month.html"
+
 MINIMUM_ALLOWED_YEAR = 1
 MAXIMUM_ALLOWED_YEAR = 9999
+
 FIRST_WEEKDAY = SUNDAY
 
 @require_GET
 @login_required
 def calendar_view(request):
-    today = date.today()
-
-    current_month_data = _get_month_context(request.user, today.year, today.month)
-    previous_month_context = _get_previous_month_context(today.year, today.month)
-    next_month_context = _get_next_month_context(today.year, today.month)
     context = {
-        "current_month": current_month_data,
-        "previous_month": previous_month_context,
-        "next_month": next_month_context,
+        "current_month": _get_current_month_context(),
     }
 
     return render(
@@ -38,34 +32,18 @@ def calendar_view(request):
 
 @require_GET
 @login_required
-def previous_month(request, year, month):
+def month_view(request, year, month):
     _validate_year(year)
     _validate_month(month)
 
     month_context = _get_month_context(request.user, year, month)
     previous_month_context = _get_previous_month_context(year, month)
-    context = {
-        "month": month_context,
-        "previous_month": previous_month_context,
-    }
-
-    return render(
-        request,
-        MONTH_TEMPLATE_PATH,
-        context,
-    )
-
-@require_GET
-@login_required
-def next_month(request, year, month):
-    _validate_year(year)
-    _validate_month(month)
-
-    month_context = _get_month_context(request.user, year, month)
     next_month_context = _get_next_month_context(year, month)
     context = {
         "month": month_context,
+        "previous_month": previous_month_context,
         "next_month": next_month_context,
+        "current_month": _get_current_month_context()
     }
 
     return render(
@@ -114,6 +92,14 @@ def _get_next_month_context(year, month):
     return {
         "year": year,
         "month": month + 1,
+    }
+
+def _get_current_month_context():
+    today = date.today()
+
+    return {
+        "year": today.year,
+        "month": today.month,
     }
 
 def _get_month_data(user, year, month):

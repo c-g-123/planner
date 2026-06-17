@@ -1,10 +1,9 @@
 {% extends "core/base.html" %}
 {% block body %}
-    <a href="{% url "core:calendar" %}">x</a>
     <ul>
         {% for tag in tags %}
             <li>
-                <a style="color: {{ tag.colour }};" href="{% url "core:edit_tag" tag.id %}">{{ tag }}</a>
+                <a href="{% url "core:tag" tag_id=tag.id %}">{{ tag }}</a>
             </li>
         {% empty %}
             You have no tags.
