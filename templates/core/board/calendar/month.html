@@ -1,23 +1,26 @@
 <div class="month-header">
     <button
-            hx-get="{% url 'core:month' year=previous_month.year month=previous_month.month %}"
-            hx-target="#calendar"
-    >
-        <
-    </button>
-    <h2>{{ month.name }} {{ month.year }}</h2>
-    <button
-            hx-get="{% url 'core:month' year=next_month.year month=next_month.month %}"
-            hx-target="#calendar"
-    >
-        >
-    </button>
-    <button
+            class="left"
             hx-get="{% url 'core:current_month' %}"
             hx-target="#calendar"
     >
-        Reset
+        Today
     </button>
+    <div class="center month-header-title-block">
+        <button
+                hx-get="{% url 'core:month' year=previous_month.year month=previous_month.month %}"
+                hx-target="#calendar"
+        >
+            <
+        </button>
+        <h2>{{ month.name }} {{ month.year }}</h2>
+        <button
+                hx-get="{% url 'core:month' year=next_month.year month=next_month.month %}"
+                hx-target="#calendar"
+        >
+            >
+        </button>
+    </div>
 </div>
 <div class="month">
     <table>

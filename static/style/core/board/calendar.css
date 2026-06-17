@@ -1,4 +1,6 @@
 :root {
+    --calendar-fab-offset: 1rem;
+
     --month-header-height: 3rem;
 
     --border-color: #d0d0d0;
@@ -14,19 +16,42 @@
     display: flex;
 }
 
+.calendar-fab {
+    position: fixed;
+    z-index: 2;
+    top: calc(var(--month-header-height) + var(--calendar-fab-offset));
+    left: var(--calendar-fab-offset);
+}
+
 .month-header {
     position: sticky;
     top: var(--navbar-height);
-    z-index: 2;
+    z-index: 1;
 
     margin: 0;
     height: var(--month-header-height);
 
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     justify-content: center;
     padding-left: var(--spacing);
     background-color: var(--header-background);
+}
+
+.left {
+    justify-self: start;
+}
+
+.center {
+    justify-self: center;
+}
+
+.month-header-title-block {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    justify-content: center;
 }
 
 .month {

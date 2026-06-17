@@ -54,6 +54,7 @@ The project is intended to improve my understanding of Django and wider web appl
 
 ## In-progress
 
+- ui layout (item panel always empty to stop calendar shifting + more)
 - datetimes are in client local timezone (calendar and item views)
 
 ## Done

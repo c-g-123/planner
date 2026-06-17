@@ -2,11 +2,12 @@
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'style/core/board/calendar.css' %}">
+    <link rel="stylesheet" href="{% static 'style/core/item.css' %}">
 {% endblock %}
 {% block body %}
     <div class="calendar-container">
         <button
-                class="floating-button"
+                class="calendar-fab"
                 hx-get="{% url 'core:create_item' %}"
                 hx-target="#item-panel"
         >
